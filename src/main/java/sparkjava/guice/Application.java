@@ -2,12 +2,10 @@ package sparkjava.guice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Guice;
-import com.google.inject.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.time.LocalDateTime;
 
 import static spark.Spark.*;
 
@@ -19,7 +17,7 @@ public class Application {
     private final ObjectMapper objectMapper;
 
     @Inject
-    Application(HelloMessageService helloMessageService, final ObjectMapper objectMapper) {
+    Application(final HelloMessageService helloMessageService, final ObjectMapper objectMapper) {
         this.helloMessageService = helloMessageService;
         this.objectMapper = objectMapper;
     }
@@ -37,7 +35,7 @@ public class Application {
         after("/*", (req, res) -> LOG.info(res.body()));
     }
 
-    public static void main(final String[] args) {
+    public static void main(final String... args) {
         Guice.createInjector(new GuiceModule())
                 .getInstance(Application.class)
                 .run(9999);
